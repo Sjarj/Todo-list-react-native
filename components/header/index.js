@@ -1,6 +1,6 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text } from "react-native";
 
-const Header = () => <Text>Liste de taches.</Text>;
+const Header = ({ content }) => <Text>{content}</Text>;
 
 export default Header;

@@ -3,6 +3,7 @@ import { View, ScrollView } from 'react-native';
 import Header from './components/header';
 import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
+import MenuTask from './components/menu-task';
 
 const taskList = [
   {
@@ -43,6 +44,7 @@ export default class App extends React.Component {
             onPressCallBack={this.displayMenu}
           />
         </ScrollView>
+        <MenuTask />
         <BttonAddTask />
       </View>
     );

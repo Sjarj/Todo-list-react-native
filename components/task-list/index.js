@@ -4,19 +4,20 @@ import { ListItem } from 'react-native-elements';
 import { TASK } from '../model';
 import { APP_COLORS } from '../../styles/color';
 
-const TaskList = ({ taskList }) => (
+const TaskList = ({ taskList, onPressCallBack }) => (
   <View>
-    {taskList.map((l, i) => (
+    {taskList.map((task, i) => (
       <ListItem
         key={i}
-        title={l.content}
+        title={task.content}
+        onPress={() => onPressCallBack(task.content)}
         bottomDivider
         chevron
         badge={{
-          value: l.status,
+          value: task.status,
           textStyle: { color: 'white' },
           badgeStyle:
-            l.status === TASK.todoStatus
+            task.status === TASK.todoStatus
               ? { backgroundColor: APP_COLORS.accent }
               : { backgroundColor: APP_COLORS.lightPrimaryColor }
         }}

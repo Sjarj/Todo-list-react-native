@@ -1,7 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import Header from './components/header';
 import TaskList from './components/task-list';
+import BttonAddTask from './components/button-add-task';
 
 const taskList = [
   {
@@ -28,11 +29,21 @@ export default class App extends React.Component {
     this.state = { taskList };
   }
 
+  displayMenu = taskContent => {
+    console.log('onPress', taskContent);
+  };
+
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Header content='Liste de taches' />
-        <TaskList taskList={this.state.taskList} />
+        <ScrollView>
+          <TaskList
+            taskList={this.state.taskList}
+            onPressCallBack={this.displayMenu}
+          />
+        </ScrollView>
+        <BttonAddTask />
       </View>
     );
   }

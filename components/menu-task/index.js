@@ -4,33 +4,35 @@ import { Button } from 'react-native-elements';
 import { style } from './style';
 import Modal from 'react-native-modal';
 
-const MenuTask = () => {
+const MenuTask = ({ isVisible, onDisapearcallback }) => {
   return (
-    <View>
-      <Modal
-        isVisible
-        animationIn={'zoomInDown'}
-        animationOut={'zoomOutUp'}
-        animationInTiming={1000}
-        animationOutTiming={1000}
-        backdropTransitionInTiming={1000}
-        backdropTransitionOutTiming={1000}
-      >
-        <View>
+    <Modal
+      isVisible={isVisible}
+      animationIn={'zoomInDown'}
+      animationOut={'zoomOutUp'}
+      animationInTiming={1000}
+      animationOutTiming={1000}
+      backdropTransitionInTiming={1000}
+      backdropTransitionOutTiming={1000}
+    >
+      <View style={style.modal}>
+        <View style={style.textView}>
           <Text>Que souhaitez vous faire sur la tâche</Text>
         </View>
-        <View>
+        <View style={style.buttonView}>
           <Button
+            buttonStyle={style.buttonDelete}
             title='Supprimer'
-            onPress={() => console.log('onPress supprimer')}
+            onPress={() => onDisapearcallback()}
           />
           <Button
+            buttonStyle={style.buttonChangeStatus}
             title='Changer status'
-            onPress={() => console.log('onPress changer status')}
+            onPress={() => onDisapearcallback()}
           />
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

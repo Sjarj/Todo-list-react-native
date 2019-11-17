@@ -27,11 +27,11 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { taskList };
+    this.state = { taskList, isMenuTaskVisible: false };
   }
 
-  displayMenu = taskContent => {
-    console.log('onPress', taskContent);
+  toggleMenuTaskVisibility = () => {
+    this.setState({ isMenuTaskVisible: !this.state.isMenuTaskVisible });
   };
 
   render() {
@@ -41,10 +41,13 @@ export default class App extends React.Component {
         <ScrollView>
           <TaskList
             taskList={this.state.taskList}
-            onPressCallBack={this.displayMenu}
+            onPressCallBack={this.toggleMenuTaskVisibility}
           />
         </ScrollView>
-        <MenuTask />
+        <MenuTask
+          isVisible={this.state.isMenuTaskVisible}
+          onDisapearcallback={this.toggleMenuTaskVisibility}
+        />
         <BttonAddTask />
       </View>
     );

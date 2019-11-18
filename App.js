@@ -90,6 +90,25 @@ export default class App extends React.Component {
     this.setState({ currentTask: task, isRenamePromptVisible: true });
   };
 
+  hideRenamePrompt = () => {
+    this.setState({ isRenamePromptVisible: false, currentTask: {} });
+  };
+
+  renameTask = value => {
+    const updatedTask = this.state.currentTask;
+    updatedTask.content = value;
+
+    const index = lodash.findIndex(this.state.taskList, {
+      id: this.state.currentTask.id
+    });
+
+    let updatedTaskList = this.state.taskList;
+
+    this.setState({ taskList: updatedTaskList }, () => {
+      this.hideRenamePrompt();
+    });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>

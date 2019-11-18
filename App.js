@@ -5,6 +5,7 @@ import Header from './components/header';
 import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
+import { TASK } from './components/model';
 
 const taskList = [
   {
@@ -54,6 +55,26 @@ export default class App extends React.Component {
     this.toggleMenuTaskVisibility();
   };
 
+  toggleTaskStatus = () => {
+    const updatedTask = this.state.currentTask;
+    updatedTask.status =
+      this.state.currentTask.status === TASK.doneStatus
+        ? TASK.todoStatus
+        : TASK.doneStatus;
+
+    const index = lodash.findIndex(this.state.taskList, {
+      id: this.state.currentTask.id
+    });
+
+    let updatedTaskList = this.state.taskList;
+    updatedTaskList[index] = updatedTask;
+    this.setState({
+      taskList: updatedTaskList,
+      isMenuTaskVisible: false,
+      currentTask: {}
+    });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -66,7 +87,7 @@ export default class App extends React.Component {
         </ScrollView>
         <MenuTask
           isVisible={this.state.isMenuTaskVisible}
-          onDisapearcallback={this.toggleMenuTaskVisibility}
+          onChangeStatusCallBack={this.toggleTaskStatus}
           onDeleteCallBack={this.deleteCurentTask}
         />
         <BttonAddTask />

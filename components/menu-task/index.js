@@ -4,12 +4,7 @@ import { Button } from 'react-native-elements';
 import { style } from './style';
 import Modal from 'react-native-modal';
 
-const MenuTask = ({
-  isVisible,
-  onDisapearcallBack,
-  onDeleteCallBack,
-  onChangeStatusCallBack
-}) => {
+const MenuTask = ({ isVisible, onDeleteCallBack, onChangeStatusCallBack }) => {
   return (
     <View>
       <Modal
@@ -34,7 +29,7 @@ const MenuTask = ({
             <Button
               buttonStyle={style.buttonChangeStatus}
               title='Changer status'
-              onPress={() => onDisapearcallbBack()}
+              onPress={() => onChangeStatusCallBack()}
             />
           </View>
         </View>

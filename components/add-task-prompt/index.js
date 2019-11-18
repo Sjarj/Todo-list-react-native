@@ -8,7 +8,7 @@ const AddTaskPrompt = ({ isVisible, onCancelCallaBack, onSubmitCallBack }) => {
       placeholder='Ex: acheter du lait'
       defaultValue=''
       visible={isVisible}
-      onCancel={() => onCancelCallaBack}
+      onCancel={() => onCancelCallaBack()}
       onSubmit={value => onSubmitCallBack(value)}
     />
   );

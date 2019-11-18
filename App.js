@@ -8,29 +8,17 @@ import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
 import AddTaskPrompt from './components/add-task-prompt';
 
-const taskList = [
-  {
-    id: 0,
-    content: 'Aller voir Sébastien',
-    status: 'En cours'
-  },
-  {
-    id: 1,
-    content: 'Se brosser les dents',
-    status: 'En cours'
-  },
-  {
-    id: 2,
-    content: 'Faire du ménage',
-    status: 'Terminé'
-  }
-];
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { taskList, isMenuTaskVisible: false, currentTask: {} };
+    this.state = {
+      taskList: [],
+      isMenuTaskVisible: false,
+      currentTask: {},
+      isAddPromptVisible: false,
+      idGenerator: 0
+    };
   }
 
   toggleMenuTaskVisibility = task => {
@@ -76,9 +64,26 @@ export default class App extends React.Component {
     });
   };
 
-  hideAddPrompt = () => {};
+  hideAddPrompt = () => {
+    this.setState({ isAddPromptVisible: false });
+  };
 
-  onAddTask = value => {};
+  onAddTask = value => {
+    const newTask = {
+      id: this.state.idGenerator,
+      content: value,
+      status: TASK.todoStatus
+    };
+    this.setState({
+      taskList: [...this.state.taskList, newTask],
+      isAddPromptVisible: false,
+      idGenerator: this.state.idGenerator + 1
+    });
+  };
+
+  displayAddPrompt = () => {
+    this.setState({ isAddPromptVisible: true });
+  };
 
   render() {
     return (
@@ -96,11 +101,11 @@ export default class App extends React.Component {
           onDeleteCallBack={this.deleteCurentTask}
         />
         <AddTaskPrompt
-          isVisible={true}
+          isVisible={this.state.isAddPromptVisible}
           onCancelCallaBack={this.hideAddPrompt}
           onSubmitCallBack={this.onAddTask}
         />
-        <BttonAddTask />
+        <BttonAddTask onPressCallBack={this.displayAddPrompt} />
       </View>
     );
   }

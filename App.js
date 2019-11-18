@@ -6,7 +6,7 @@ import Header from './components/header';
 import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
-import AddTaskPrompt from './components/add-task-prompt';
+import TextPrompt from './components/text-prompt';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,7 +17,8 @@ export default class App extends React.Component {
       isMenuTaskVisible: false,
       currentTask: {},
       isAddPromptVisible: false,
-      idGenerator: 0
+      idGenerator: 0,
+      isRenamePromptVisible: false
     };
   }
 
@@ -85,6 +86,10 @@ export default class App extends React.Component {
     this.setState({ isAddPromptVisible: true });
   };
 
+  dispalyRenameTask = task => {
+    this.setState({ currentTask: task, isRenamePromptVisible: true });
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -93,6 +98,7 @@ export default class App extends React.Component {
           <TaskList
             taskList={this.state.taskList}
             onPressCallBack={this.toggleMenuTaskVisibility}
+            onLongPressCallBack={this.dispalyRenameTask}
           />
         </ScrollView>
         <MenuTask
@@ -100,10 +106,20 @@ export default class App extends React.Component {
           onChangeStatusCallBack={this.toggleTaskStatus}
           onDeleteCallBack={this.deleteCurentTask}
         />
-        <AddTaskPrompt
+        <TextPrompt
           isVisible={this.state.isAddPromptVisible}
           onCancelCallaBack={this.hideAddPrompt}
           onSubmitCallBack={this.onAddTask}
+          title='ajouter une nouvelle tâche'
+          placeholder='Ex: Acheter du lait'
+          defaultValue=''
+        />
+        <TextPrompt
+          isVisible={this.state.isRenamePromptVisible}
+          onCancelCallaBack={this.hideRenamePrompt}
+          onSubmitCallBack={this.renameTask}
+          title='Renomer la tâche'
+          defaultValue={this.state.currentTask.content}
         />
         <BttonAddTask onPressCallBack={this.displayAddPrompt} />
       </View>

@@ -4,13 +4,14 @@ import { ListItem } from 'react-native-elements';
 import { TASK } from '../model';
 import { APP_COLORS } from '../../styles/color';
 
-const TaskList = ({ taskList, onPressCallBack }) => (
+const TaskList = ({ taskList, onPressCallBack, onLongPressCallBack }) => (
   <View>
     {taskList.map((task, i) => (
       <ListItem
         key={i}
         title={task.content}
         onPress={() => onPressCallBack(task)}
+        onLongPress={() => onLongPressCallBack(task)}
         bottomDivider
         chevron
         badge={{

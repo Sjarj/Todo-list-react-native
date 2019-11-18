@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import lodash from 'lodash';
 import { TASK } from './components/model';
 import Header from './components/header';
@@ -7,6 +7,7 @@ import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
 import TextPrompt from './components/text-prompt';
+import { style } from './style';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -109,17 +110,28 @@ export default class App extends React.Component {
     });
   };
 
+  renderTaskList = () => {
+    if (this.state.taskList.length > 0) {
+      return (
+        <TaskList
+          taskList={this.state.taskList}
+          onPressCallBack={this.toggleMenuTaskVisibility}
+          onLongPressCallBack={this.dispalyRenameTask}
+        />
+      );
+    }
+    return (
+      <View style={style.noTask}>
+        <Text>Cliquer sur le boutuon ajouter por créer une tache</Text>
+      </View>
+    );
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <Header content='Liste de taches' />
-        <ScrollView>
-          <TaskList
-            taskList={this.state.taskList}
-            onPressCallBack={this.toggleMenuTaskVisibility}
-            onLongPressCallBack={this.dispalyRenameTask}
-          />
-        </ScrollView>
+        <ScrollView>{this.renderTaskList()}</ScrollView>
         <MenuTask
           isVisible={this.state.isMenuTaskVisible}
           onChangeStatusCallBack={this.toggleTaskStatus}

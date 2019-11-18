@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "expo": "^35.0.0",
+    "lodash": "^4.17.15",
     "mdbreact": "^4.22.1",
     "react": "16.8.3",
     "react-dom": "16.8.3",

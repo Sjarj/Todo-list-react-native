@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
+import lodash from 'lodash';
 import Header from './components/header';
 import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
@@ -12,12 +13,12 @@ const taskList = [
     status: 'En cours'
   },
   {
-    id: 0,
+    id: 1,
     content: 'Se brosser les dents',
     status: 'En cours'
   },
   {
-    id: 0,
+    id: 2,
     content: 'Faire du ménage',
     status: 'Terminé'
   }
@@ -27,11 +28,30 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { taskList, isMenuTaskVisible: false };
+    this.state = { taskList, isMenuTaskVisible: false, currentTask: {} };
   }
 
-  toggleMenuTaskVisibility = () => {
-    this.setState({ isMenuTaskVisible: !this.state.isMenuTaskVisible });
+  toggleMenuTaskVisibility = task => {
+    let currentTask = task;
+
+    if (this.state.isMenuTaskVisible) {
+      currentTask = {};
+    }
+    this.setState({
+      isMenuTaskVisible: !this.state.isMenuTaskVisible,
+      currentTask
+    });
+  };
+
+  deleteCurentTask = () => {
+    const index = lodash.findIndex(this.state.taskList, {
+      id: this.state.currentTask.id
+    });
+
+    let list = this.state.taskList;
+    list.splice(index, 1);
+    this.setState({ taskList: list, currentTask: {} });
+    this.toggleMenuTaskVisibility();
   };
 
   render() {
@@ -47,6 +67,7 @@ export default class App extends React.Component {
         <MenuTask
           isVisible={this.state.isMenuTaskVisible}
           onDisapearcallback={this.toggleMenuTaskVisibility}
+          onDeleteCallBack={this.deleteCurentTask}
         />
         <BttonAddTask />
       </View>

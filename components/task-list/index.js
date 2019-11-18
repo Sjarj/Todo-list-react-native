@@ -10,7 +10,7 @@ const TaskList = ({ taskList, onPressCallBack }) => (
       <ListItem
         key={i}
         title={task.content}
-        onPress={() => onPressCallBack(task.content)}
+        onPress={() => onPressCallBack(task)}
         bottomDivider
         chevron
         badge={{

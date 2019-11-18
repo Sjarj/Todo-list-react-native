@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Text } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import lodash from 'lodash';
 import { TASK } from './components/model';
 import Header from './components/header';
@@ -8,6 +9,8 @@ import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
 import TextPrompt from './components/text-prompt';
 import { style } from './style';
+
+const storageKey = 'taskList';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -21,6 +24,18 @@ export default class App extends React.Component {
       idGenerator: 0,
       isRenamePromptVisible: false
     };
+  }
+  componentWillMount() {
+    AsyncStorage.getItem(storageKey).then(storedTaskList => {
+      if (storedTaskList) {
+        this.setState({ taskList: JSON.parse(storedTaskList) }, () => {
+          this.setState({
+            idGenerator:
+              this.state.taskList[this.state.taskList.length - 1].id + 1
+          });
+        });
+      }
+    });
   }
 
   toggleMenuTaskVisibility = task => {
@@ -42,8 +57,10 @@ export default class App extends React.Component {
 
     let list = this.state.taskList;
     list.splice(index, 1);
-    this.setState({ taskList: list, currentTask: {} });
-    this.toggleMenuTaskVisibility();
+    this.setState({ taskList: list, currentTask: {} }, () => {
+      this.toggleMenuTaskVisibility();
+      this.saveTaskList();
+    });
   };
 
   toggleTaskStatus = () => {
@@ -59,11 +76,16 @@ export default class App extends React.Component {
 
     let updatedTaskList = this.state.taskList;
     updatedTaskList[index] = updatedTask;
-    this.setState({
-      taskList: updatedTaskList,
-      isMenuTaskVisible: false,
-      currentTask: {}
-    });
+    this.setState(
+      {
+        taskList: updatedTaskList,
+        isMenuTaskVisible: false,
+        currentTask: {}
+      },
+      () => {
+        this.saveTaskList();
+      }
+    );
   };
 
   hideAddPrompt = () => {
@@ -76,11 +98,16 @@ export default class App extends React.Component {
       content: value,
       status: TASK.todoStatus
     };
-    this.setState({
-      taskList: [...this.state.taskList, newTask],
-      isAddPromptVisible: false,
-      idGenerator: this.state.idGenerator + 1
-    });
+    this.setState(
+      {
+        taskList: [...this.state.taskList, newTask],
+        isAddPromptVisible: false,
+        idGenerator: this.state.idGenerator + 1
+      },
+      () => {
+        this.saveTaskList();
+      }
+    );
   };
 
   displayAddPrompt = () => {
@@ -104,10 +131,16 @@ export default class App extends React.Component {
     });
 
     let updatedTaskList = this.state.taskList;
+    updatedTaskList[index] = updatedTask;
 
     this.setState({ taskList: updatedTaskList }, () => {
       this.hideRenamePrompt();
+      this.saveTaskList();
     });
+  };
+
+  saveTaskList = () => {
+    AsyncStorage.setItem(storageKey, JSON.stringify(this.state.taskList));
   };
 
   renderTaskList = () => {
@@ -122,7 +155,7 @@ export default class App extends React.Component {
     }
     return (
       <View style={style.noTask}>
-        <Text>Cliquer sur le boutuon ajouter por créer une tache</Text>
+        <Text>Cliquer sur le bouton ajouter por créer une tache</Text>
       </View>
     );
   };

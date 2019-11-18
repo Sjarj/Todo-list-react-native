@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import lodash from 'lodash';
+import { TASK } from './components/model';
 import Header from './components/header';
 import TaskList from './components/task-list';
 import BttonAddTask from './components/button-add-task';
 import MenuTask from './components/menu-task';
-import { TASK } from './components/model';
+import AddTaskPrompt from './components/add-task-prompt';
 
 const taskList = [
   {
@@ -75,6 +76,10 @@ export default class App extends React.Component {
     });
   };
 
+  hideAddPrompt = () => {};
+
+  onAddTask = value => {};
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -89,6 +94,11 @@ export default class App extends React.Component {
           isVisible={this.state.isMenuTaskVisible}
           onChangeStatusCallBack={this.toggleTaskStatus}
           onDeleteCallBack={this.deleteCurentTask}
+        />
+        <AddTaskPrompt
+          isVisible={true}
+          onCancelCallaBack={this.hideAddPrompt}
+          onSubmitCallBack={this.onAddTask}
         />
         <BttonAddTask />
       </View>
